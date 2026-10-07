@@ -1,0 +1,19 @@
+# 1. Create the base pivot table with counts
+counts = pair_types_ref_df.reset_index().pivot_table(
+    index="pair_type", columns="split", values="pair_id", aggfunc="count"
+).fillna(0)
+
+# 2. Calculate the total count for each pair_type across all splits
+counts["total_count"] = counts.sum(axis=1)
+
+# 3. Calculate percentages based on the total_count
+counts["train_%"] = ((counts["train"] / counts["total_count"]) * 100).round(2).astype(str) + "%"
+counts["test_%"] = ((counts["test"] / counts["total_count"]) * 100).round(2).astype(str) + "%"
+
+# 4. Select and reorder the final columns
+final_df = counts[["total_count", "train", "test", "train_%", "test_%"]]
+final_df'
+
+
+
+
